@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 
 export default function Blog() {
-  let [title, setTitle] = useState("");
-  let [content, setContent] = useState("");
+  // let [title, setTitle] = useState("");
+  // let [content, setContent] = useState("");
+  let [formData,setFormData]=useState({title:"",content:""})
   const [blogs,setBlogs]=useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // setBlogs.push({title,content});       This won't work.
-    setBlogs([...blogs,{title,content}]);
+    setBlogs([...blogs,{title:formData.title,content:formData.content}]);
     console.log(blogs);
-    setTitle("");
-    setContent("");
+    setFormData({title:"",content:""});
 
   };
 
@@ -27,10 +27,11 @@ export default function Blog() {
             type="text"
             id="name"
             placeholder="Enter the title here...."
-            value={title}
+            value={formData.title}
             onChange={(e) => {
-              setTitle(e.target.value);
+              setFormData({title:e.target.value,content:formData.content});
             }}
+            required
           />
 
           <label htmlFor="content" className="l">
@@ -39,10 +40,12 @@ export default function Blog() {
           <textarea
             id="content"
             placeholder="Content goes here......."
+            value={formData.content}
             onChange={(e) => {
-              setContent(e.target.value);
+              setFormData({title:formData.title,content:e.target.value});
             }}
-            value={content}
+            required
+           
           />
 
           <button type="submit">ADD</button>
