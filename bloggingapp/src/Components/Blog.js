@@ -16,8 +16,10 @@ export default function Blog() {
   };
   const handleDelete=(index)=>{
     console.log("handleDelete",index);
-    const updatedBlogs = blogs.filter((_, i) => i !== index);
-    setBlogs(updatedBlogs);
+    // const updatedBlogs = blogs.filter((_, i) => i !== index);
+    // setBlogs(updatedBlogs);
+
+    setBlogs(blogs.filter((blog,i)=>index!==i));
   }
 
   return (
