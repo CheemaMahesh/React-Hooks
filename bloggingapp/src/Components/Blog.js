@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 
 export default function Blog() {
   // let [title, setTitle] = useState("");
   // let [content, setContent] = useState("");
   let [formData,setFormData]=useState({title:"",content:""})
   const [blogs,setBlogs]=useState([]);
+  const titleRef=useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,6 +13,8 @@ export default function Blog() {
     setBlogs([...blogs,{title:formData.title,content:formData.content}]);
     console.log(blogs);
     setFormData({title:"",content:""});
+    titleRef.current.focus();
+   
 
   };
   const handleDelete=(index)=>{
@@ -35,6 +38,7 @@ export default function Blog() {
             id="name"
             placeholder="Enter the title here...."
             value={formData.title}
+            ref={titleRef}
             onChange={(e) => {
               setFormData({title:e.target.value,content:formData.content});
             }}
