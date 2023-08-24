@@ -1,28 +1,56 @@
-import React, { useState,useRef } from "react";
+import React, { useState,useRef,useEffect ,useReducer} from "react";
+
+
+function blogReducer(state,action){
+switch(action.type){
+  case "ADD":
+    return [action.blog,...state]
+    case "REMOVE":
+      return state.filter((blog,index)=>index!==action.index)
+      default:
+        return[]
+
+}
+}
 
 export default function Blog() {
   // let [title, setTitle] = useState("");
   // let [content, setContent] = useState("");
   let [formData,setFormData]=useState({title:"",content:""})
-  const [blogs,setBlogs]=useState([]);
+  // const [blogs,setBlogs]=useState([]);
+  const [blogs,dispatch]=useReducer(blogReducer,[]);
   const titleRef=useRef(null);
+
+  useEffect(()=>{
+    titleRef.current.focus();
+  },[]);
+  useEffect(()=>{
+    if(blogs.length&&blogs[0].title){
+      document.title=blogs[0].title
+    }else{
+      document.title="No Blogs"
+    }
+  },[blogs])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // setBlogs.push({title,content});       This won't work.
-    setBlogs([...blogs,{title:formData.title,content:formData.content}]);
+    // setBlogs([{title:formData.title,content:formData.content},...blogs]);
+    dispatch({type:"ADD",blog:{title:formData.title,content:formData.content}})
     console.log(blogs);
     setFormData({title:"",content:""});
-    titleRef.current.focus();
+   
+    
    
 
   };
-  const handleDelete=(index)=>{
-    console.log("handleDelete",index);
+  const handleDelete=(i)=>{
+    console.log("handleDelete",i);
     // const updatedBlogs = blogs.filter((_, i) => i !== index);
     // setBlogs(updatedBlogs);
 
-    setBlogs(blogs.filter((blog,i)=>index!==i));
+    // setBlogs(blogs.filter((blog,i)=>index!==i));
+    dispatch({type:"REMOVE",index:i})
   }
 
   return (
